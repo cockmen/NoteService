@@ -1,0 +1,5 @@
+POSTGRES_DB: "note"
+POSTGRES_USER: "postgres"
+POSTGRES_PASSWORD: "asdfg"
+PORT: 5432
+HOST: "localhost"
