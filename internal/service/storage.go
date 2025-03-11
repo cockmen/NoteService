@@ -14,12 +14,12 @@ type User struct {
 }
 
 type Note struct {
-	Id        int       `json:"id"`
-	Title     string    `json:"title"`
-	Body      string    `json:"body"`
-	Created   time.Time `json:"created_at"`
-	Updated   time.Time `json:"updated_at"`
-	UserEmail string    `json:"user_email"`
+	Id      int       `json:"id"`
+	Title   string    `json:"title"`
+	Body    string    `json:"body"`
+	Created time.Time `json:"created_at"`
+	Updated time.Time `json:"updated_at"`
+	UserId  int       `json:"user_id"`
 }
 
 type LoginRequest struct {
@@ -32,7 +32,7 @@ type TokenResponse struct {
 }
 
 type Claims struct {
-	Email string `json:"email"`
+	Id int `json:"id"`
 	jwt.StandardClaims
 }
 

@@ -15,17 +15,17 @@ func NewRepo(db *sql.DB) *Repo {
 }
 
 func (r *Repo) RGetNoteOwner(id int) (string, error) {
-	var email Note
-	err := r.db.QueryRow("SELECT user_email FROM notes WHERE id=$1", id).Scan(&email.UserEmail)
+	var UserId Note
+	err := r.db.QueryRow("SELECT user_id FROM notes WHERE id=$1", id).Scan(&UserId.UserId)
 	if err != nil {
 		return "", err
 	}
-	return email.UserEmail, nil
+	return UserId.UserId, nil
 }
 
-func (r *Repo) RGetNotes(email string) ([]Note, error) {
+func (r *Repo) RGetNotes(id int) ([]Note, error) {
 	var notes []Note
-	rows, err := r.db.Query(`SELECT id, title, body, created_at, updated_at FROM notes WHERE user_email=$1`, email)
+	rows, err := r.db.Query(`SELECT id, title, body, created_at, updated_at FROM notes WHERE user_id=$1`, id)
 	if err != nil {
 		return nil, err
 	}
@@ -33,13 +33,10 @@ func (r *Repo) RGetNotes(email string) ([]Note, error) {
 
 	for rows.Next() {
 		var n Note
-		var userEmail sql.NullString
 		if err := rows.Scan(&n.Id, &n.Title, &n.Body, &n.Created, &n.Updated); err != nil {
 			return nil, err
 		}
-		if userEmail.Valid {
-			n.UserEmail = userEmail.String
-		}
+
 		notes = append(notes, n)
 	}
 	if len(notes) == 0 {
@@ -59,8 +56,8 @@ func (r *Repo) RGetNoteById(id int) (*Note, error) {
 	return &note, nil
 }
 
-func (r *Repo) RCreateNewNote(title, body, email string) error {
-	_, err := r.db.Exec(`INSERT INTO notes (title, body, user_email, created_at) VALUES ($1,$2,$3,$4)`, title, body, email, time.Now())
+func (r *Repo) RCreateNewNote(title, body string, id int) error {
+	_, err := r.db.Exec(`INSERT INTO notes (title, body, user_id, created_at) VALUES ($1,$2,$3,$4)`, title, body, id, time.Now())
 	if err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-POSTGRES_DB: "note"
+POSTGRES_DB: "notes"
 POSTGRES_USER: "postgres"
 POSTGRES_PASSWORD: "asdfg"
 PORT: 5432
